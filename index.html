@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d12">
+  <meta name="description" content="MITROON — an Indian arcade fighting game. Challenge the CPU or invite a friend into the arena.">
+  <title>MITROON — Enter the Arena</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="MITROON home"><span class="brand-mark">M</span><span>MITROON<span class="brand-dot">.</span></span></a>
+    <div class="top-meta"><span class="live-dot"></span> ARCADE PROTOTYPE <span class="meta-divider">/</span> SEASON 01</div>
+    <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">SOUND: ON</button>
+  </header>
+
+  <main>
+    <section class="hero" id="homeScreen">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="eyebrow-line"></span> THE STREETS HAVE A NEW CHAMPION</div>
+        <h1>APNA<br><span>ARENA.</span></h1>
+        <p class="hero-lede">No scripts. No shortcuts. Just skill.<br>Step in, throw down, earn your name.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" id="playCpu"><span>FIGHT THE CPU</span><span class="btn-arrow">↗</span></button>
+          <button class="btn btn-outline" id="openOnline">PLAY WITH A FRIEND <span>＋</span></button>
+        </div>
+        <div class="hero-foot"><span>01</span><i></i><span>CHOOSE YOUR FIGHT</span></div>
+      </div>
+      <div class="hero-art" aria-label="Illustration of two original Indian arcade fighters">
+        <div class="art-sun"></div><div class="art-ring ring-one"></div><div class="art-ring ring-two"></div>
+        <div class="art-label label-top">DESI<br>FIGHT CLUB</div>
+        <div class="fighter fighter-orange"><div class="fighter-head"></div><div class="fighter-body"></div><div class="fighter-arm arm-left"></div><div class="fighter-arm arm-right"></div><div class="fighter-leg leg-left"></div><div class="fighter-leg leg-right"></div></div>
+        <div class="fighter fighter-blue"><div class="fighter-head"></div><div class="fighter-body"></div><div class="fighter-arm arm-left"></div><div class="fighter-arm arm-right"></div><div class="fighter-leg leg-left"></div><div class="fighter-leg leg-right"></div></div>
+        <div class="art-vs">VS</div><div class="art-label label-bottom">MADE FOR<br>THE BOLD</div>
+        <div class="art-caption">KOLKATA • MUMBAI • EVERYWHERE</div>
+      </div>
+    </section>
+
+    <section class="mode-section" id="modeSection">
+      <div class="section-heading"><div><span class="eyebrow">PICK YOUR BATTLE</span><h2>THE ARENA<br>IS YOURS.</h2></div><p>One fighter. One opponent.<br>Make every move count.</p></div>
+      <div class="mode-grid">
+        <article class="mode-card cpu-card"><div class="mode-number">01 / SOLO</div><div class="mode-icon">拳</div><h3>VS THE MACHINE</h3><p>Warm up against the CPU. Learn the moves, find your rhythm, own the arena.</p><button class="text-button" id="cpuCardButton">ENTER SOLO MODE <span>↗</span></button></article>
+        <article class="mode-card online-card"><div class="mode-number">02 / DUO</div><div class="mode-icon">双</div><h3>CALL A MITROON</h3><p>Create a private room, share the code and settle the score with a friend.</p><button class="text-button" id="onlineCardButton">CREATE A ROOM <span>↗</span></button></article>
+      </div>
+    </section>
+
+    <section class="game-section hidden" id="gameSection">
+      <div class="game-heading"><div><span class="eyebrow">LIVE FROM THE GULLY</span><h2 id="gameTitle">CPU CHALLENGE</h2></div><button class="back-button" id="backHome">← BACK TO HOME</button></div>
+      <div class="game-shell">
+        <div class="hud">
+          <div class="player-hud"><div class="player-name" id="leftName">YOU <span>01</span></div><div class="health-track"><div class="health-fill" id="leftHealth"></div></div><div class="hud-sub">THE CHALLENGER</div></div>
+          <div class="round-indicator"><span>ROUND</span><strong>01</strong></div>
+          <div class="player-hud player-hud-right"><div class="player-name" id="rightName">CPU <span>02</span></div><div class="health-track"><div class="health-fill" id="rightHealth"></div></div><div class="hud-sub">THE OPPONENT</div></div>
+        </div>
+        <div class="arena-wrap"><canvas id="arena" width="960" height="440" aria-label="MITROON fighting arena"></canvas><div class="arena-overlay" id="arenaOverlay"><div class="overlay-kicker">MITROON FIGHT NIGHT</div><div class="overlay-title" id="overlayTitle">READY?</div><div class="overlay-message" id="overlayMessage">Step into the arena.</div><button class="btn btn-primary" id="startFight">START FIGHT <span class="btn-arrow">↗</span></button></div></div>
+        <div class="game-bottom"><div class="control-hint"><kbd>A</kbd><kbd>D</kbd> MOVE <kbd>W</kbd> JUMP <kbd>J</kbd> PUNCH <kbd>K</kbd> KICK <kbd>L</kbd> SPECIAL <kbd>S</kbd> BLOCK</div><div class="connection-status" id="connectionStatus"><span class="live-dot"></span> LOCAL MATCH</div></div>
+        <div class="touch-controls"><div class="touch-group"><button data-key="a">◀</button><button data-key="d">▶</button><button data-key="w">▲</button></div><div class="touch-group"><button data-key="s">BLOCK</button><button data-key="j">PUNCH</button><button data-key="k">KICK</button><button data-key="l" class="special-touch">SPECIAL</button></div></div>
+      </div>
+    </section>
+
+    <section class="online-panel hidden" id="onlinePanel">
+      <div class="online-card-panel"><button class="close-panel" id="closeOnline" aria-label="Close">×</button><span class="eyebrow">BRING YOUR OWN RIVAL</span><h2>FRIENDS DON'T<br>LET FRIENDS <span>WIN.</span></h2><p>Make a private room and send the code to your mitroon. Both players need the MITROON multiplayer server running.</p>
+        <label for="serverUrl">MULTIPLAYER SERVER URL</label><input id="serverUrl" type="url" placeholder="wss://your-mitroon-server.example">
+        <div class="online-actions"><button class="btn btn-primary" id="createRoom">CREATE ROOM</button><div class="join-row"><input id="roomCode" maxlength="6" placeholder="ROOM CODE" autocomplete="off"><button class="btn btn-outline" id="joinRoom">JOIN</button></div></div>
+        <div class="room-feedback" id="roomFeedback" role="status"></div>
+      </div>
+    </section>
+
+    <section class="how-section"><div class="how-title"><span class="eyebrow">EARN YOUR RESPECT</span><h2>BUILT FOR<br>THE NEXT ROUND.</h2></div><div class="how-list"><div><span>01</span><p><b>READ THE FIGHT.</b> Watch your opponent. Timing beats button mashing.</p></div><div><span>02</span><p><b>OWN YOUR SPACE.</b> Move, jump and block. The arena rewards smart play.</p></div><div><span>03</span><p><b>MAKE IT PERSONAL.</b> Invite a friend and settle the rivalry.</p></div></div></section>
+  </main>
+  <footer><a class="brand" href="#"><span class="brand-mark">M</span><span>MITROON<span class="brand-dot">.</span></span></a><span>BUILT FOR THE LOVE OF THE FIGHT.</span><span>© 2026 MITROON</span></footer>
+  <script src="game.js"></script>
+</body>
+</html>
