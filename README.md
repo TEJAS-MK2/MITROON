@@ -10,7 +10,7 @@
 
 ## Political parody roster
 
-The current eight-fighter prototype includes public figures associated with different Indian political parties:
+The current sixteen-fighter roster includes public figures associated with different Indian political parties:
 
 | Fighter | Party association | Visual caricature cues |
 |---|---|---|
@@ -22,6 +22,14 @@ The current eight-fighter prototype includes public figures associated with diff
 | Arvind Kejriwal | Aam Aadmi Party | Glasses and muffler |
 | Akhilesh Yadav | Samajwadi Party | Red cap |
 | M. K. Stalin | Dravida Munnetra Kazhagam | Dark glasses and dark hair |
+| Priyanka Gandhi | Indian National Congress | Green-accented campaign shawl |
+| Mallikarjun Kharge | Indian National Congress | Silver hair and veteran statesperson styling |
+| Pinarayi Vijayan | CPI(M) | Glasses and red-accented attire |
+| Uddhav Thackeray | Shiv Sena (UBT) | Dark glasses and understated styling |
+| Devendra Fadnavis | BJP | Glasses and green-accented attire |
+| Nitish Kumar | Janata Dal (United) | White kurta styling |
+| N. Chandrababu Naidu | Telugu Desam Party | Silver hair and gold-accented attire |
+| Hemant Soren | Jharkhand Mukti Morcha | Green regional scarf styling |
 
 Party labels are descriptive associations, not endorsements. Fighter power, speed, animations, attacks and match outcomes are fictional game mechanics; they do not represent real-world ability, character or political performance. MITROON is parody and is not affiliated with any politician or party. The artwork is original stylised game art, not official portraits or photographs.
 
@@ -87,11 +95,12 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 
 - [x] Responsive arcade landing page and arena UI
 - [x] Playable local CPU duel prototype
-- [x] Eight public-figure parody fighters from multiple parties\n- [x] Distinctive illustrated costumes, facial details, signature moves and victory poses
+- [x] Sixteen public-figure parody fighters from multiple parties\n- [x] Distinctive illustrated costumes, facial details, signature moves and victory poses
 - [x] Character attributes, opponent selection, three stage themes and CPU difficulty
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
-- [ ] More fighters, stages and signature animations
+- [x] Expanded the parody roster to sixteen fighters across multiple parties
+- [ ] More stages and signature animations
 - [x] Best-of-three match scoring and round progression\n- [x] Single-player tournament run and local persistent leaderboard\n- [ ] Improved combat animation, audio and accessibility
 - [ ] Server-authoritative combat, reconnection and abuse protection
 - [ ] Automated gameplay tests and production monitoring
