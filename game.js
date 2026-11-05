@@ -49,9 +49,9 @@ function setMode(next){
  if(next==="cpu")applyRosterFighter(fighters[1],roster[selectedCpu]);else if(next==="tournament")applyRosterFighter(fighters[1],roster[tournamentOpponents[tournamentIndex]]);
  $("leftName").textContent=roster[selectedHero].name;
  $("rightName").textContent=next==="online"?"FRIEND":next==="tournament"?roster[tournamentOpponents[0]].name:roster[selectedCpu].name;
- $("connectionStatus").innerHTML=next==="cpu"?'<span class="live-dot"></span> LOCAL MATCH':'<span class="live-dot"></span> PRIVATE ROOM';
+ $("connectionStatus").innerHTML=next==="tournament"?'<span class="live-dot"></span> TOURNAMENT RUN':next==="cpu"?'<span class="live-dot"></span> LOCAL MATCH':'<span class="live-dot"></span> PRIVATE ROOM';
  selectSection.classList.add("hidden");
- showGame(next==="cpu"?"CPU CHALLENGE":"FRIEND DUEL",next==="cpu"?"A challenger approaches.":"Your friend is in the arena.");
+ showGame(next==="tournament"?"TOURNAMENT RUN":next==="cpu"?"CPU CHALLENGE":"FRIEND DUEL",next==="tournament"?"Defeat every rival and claim the cup.":next==="cpu"?"A challenger approaches.":"Your friend is in the arena.");
 }
 function setInput(k,on){if(k==="a")input.left=on;if(k==="d")input.right=on;if(k==="w")input.jump=on;if(k==="j")input.punch=on;if(k==="k")input.kick=on;if(k==="l")input.special=on;if(k==="s")input.block=on;}
 function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.42:.25;f.attackType=type;f.cooldown=type==="special"?.9:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+22);}
