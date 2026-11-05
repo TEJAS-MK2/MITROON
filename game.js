@@ -28,6 +28,15 @@ const roster=[
 {name:"ARVIND KEJRIWAL",party:"AAP",role:"MUFFLER-WEARING DEBATER",initials:"AK",color:"#b94c6a",accent:"#ffb2c5",look:"muffler-glasses",special:"MUFFLER CYCLONE",power:3,speed:4},
 {name:"AKHILESH YADAV",party:"SP",role:"RED-CAP PLAYMAKER",initials:"AY",color:"#a94343",accent:"#f2b0a8",look:"red-cap",special:"RED-CAP RUSH",power:3,speed:4},
 {name:"M. K. STALIN",party:"DMK",role:"DARK-GLASSES VETERAN",initials:"MK",color:"#6f68a8",accent:"#c3bcff",look:"dark-glasses",special:"DRAVIDA DRIVE",power:4,speed:3}
+
+,{name:"PRIYANKA GANDHI",party:"INC",role:"CAMPAIGN TRAILBLAZER",initials:"PG",color:"#347eaa",accent:"#b8dfff",look:"green-shawl",special:"JAN-SAMVAD SPARK",power:3,speed:4}
+,{name:"MALLIKARJUN KHARGE",party:"INC",role:"VETERAN FLOOR GENERAL",initials:"MK",color:"#765b48",accent:"#e5c6a2",look:"grey-hair",special:"HOUSE OF DEBATE",power:4,speed:2}
+,{name:"PINARAYI VIJAYAN",party:"CPI(M)",role:"KERALA'S STEADY OPERATOR",initials:"PV",color:"#b84a4a",accent:"#f0b0a6",look:"spectacles",special:"RED-FLAG RHYTHM",power:4,speed:2}
+,{name:"UDDHAV THACKERAY",party:"SHIV SENA (UBT)",role:"MAHARASHTRA'S SILENT STRATEGIST",initials:"UT",color:"#668b73",accent:"#c2e0c8",look:"black-glasses",special:"MATOSHREE MOMENTUM",power:3,speed:3}
+,{name:"DEVENDRA FADNAVIS",party:"BJP",role:"MAHARASHTRA'S QUICK PLANNER",initials:"DF",color:"#397c68",accent:"#a9dfc5",look:"spectacles",special:"MANTRALAYA MANEUVER",power:3,speed:4}
+,{name:"NITISH KUMAR",party:"JD(U)",role:"BIHAR'S SEASONED NAVIGATOR",initials:"NK",color:"#6d91a9",accent:"#c5dce8",look:"white-kurta",special:"PALATU PIVOT",power:2,speed:4}
+,{name:"N. CHANDRABABU NAIDU",party:"TDP",role:"TECH-FOCUSED CAMPAIGNER",initials:"CN",color:"#9a8b43",accent:"#f0dc83",look:"grey-hair",special:"AMARAVATI ACCELERATOR",power:3,speed:4}
+,{name:"HEMANT SOREN",party:"JMM",role:"JHARKHAND'S GROUNDED CAMPAIGNER",initials:"HS",color:"#397b55",accent:"#a9dfb8",look:"regional-scarf",special:"JUNGLE JOSH",power:3,speed:4}
 ];
 function renderRoster(){
  const grid=$("rosterGrid");grid.innerHTML="";
@@ -86,6 +95,9 @@ function drawFighter(f){
  if(f.look==="white-sari"){ctx.fillStyle="#f7f2e8";ctx.beginPath();ctx.moveTo(-28,-148);ctx.lineTo(28,-148);ctx.lineTo(36,-78);ctx.lineTo(-36,-78);ctx.closePath();ctx.fill();ctx.strokeStyle="#27977a";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(25,-86);ctx.stroke();ctx.fillStyle="#27977a";ctx.fillRect(-29,-91,58,4);}
  if(f.look==="shaved-saffron"){ctx.fillStyle="#ef9d27";ctx.beginPath();ctx.moveTo(-28,-148);ctx.lineTo(28,-148);ctx.lineTo(36,-78);ctx.lineTo(-36,-78);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd28a";ctx.fillRect(-5,-192,10,14);}
  if(f.look==="muffler-glasses"){ctx.fillStyle="#dce0e4";ctx.beginPath();ctx.moveTo(-28,-145);ctx.lineTo(28,-145);ctx.lineTo(31,-130);ctx.lineTo(-31,-130);ctx.closePath();ctx.fill();ctx.fillRect(18,-133,12,50);}
+ if(f.look==="green-shawl"||f.look==="regional-scarf"){ctx.strokeStyle=f.accent;ctx.lineWidth=9;ctx.beginPath();ctx.moveTo(-24,-145);ctx.lineTo(20,-82);ctx.stroke();ctx.fillStyle=f.accent;ctx.fillRect(-29,-91,58,5);}
+ if(f.look==="white-kurta"){ctx.fillStyle="#f1eee5";ctx.beginPath();ctx.moveTo(-28,-148);ctx.lineTo(28,-148);ctx.lineTo(36,-78);ctx.lineTo(-36,-78);ctx.closePath();ctx.fill();ctx.strokeStyle=f.accent;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-144);ctx.lineTo(0,-84);ctx.stroke();}
+
  // Arms animate during attack and victory
  const armY=celebrating?victoryLift:(attacking?attackLift:-101);
  ctx.strokeStyle="#a96c4d";ctx.lineWidth=15;ctx.lineCap="round";
@@ -102,6 +114,8 @@ function drawFighter(f){
  if(f.look==="white-tee-beard"){ctx.fillStyle="#513d32";ctx.beginPath();ctx.arc(0,-197,24,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle="#513d32";ctx.beginPath();ctx.roundRect(-17,-164,34,16,7);ctx.fill();}
  if(f.look==="red-cap"||f.look==="white-beard"){ctx.fillStyle=f.look==="red-cap"?"#bd3434":f.accent;ctx.beginPath();ctx.roundRect(-25,-207,50,14,7);ctx.fill();ctx.fillRect(-28,-196,56,5);}
  if(f.look==="dark-glasses"){ctx.fillStyle="#241c1a";ctx.beginPath();ctx.arc(0,-196,24,Math.PI,Math.PI*2);ctx.fill();}
+ if(f.look==="grey-hair"){ctx.fillStyle="#d4d0c7";ctx.beginPath();ctx.arc(0,-197,24,Math.PI,Math.PI*2);ctx.fill();ctx.fillRect(-22,-198,44,6);}
+
  if(f.look==="white-sari"){ctx.fillStyle="#211d1c";ctx.beginPath();ctx.arc(0,-197,23,Math.PI,Math.PI*2);ctx.fill();}
  // Eyes, brows, nose and expression
  ctx.fillStyle="#34241f";ctx.fillRect(-14,-187,10,3);ctx.fillRect(4,-187,10,3);
@@ -109,7 +123,7 @@ function drawFighter(f){
  ctx.strokeStyle="#744a38";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-179);ctx.lineTo(-2,-169);ctx.stroke();
  ctx.strokeStyle="#5c342c";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-6,-161);ctx.quadraticCurveTo(0,-157,7,-161);ctx.stroke();
  // Recognisable accessory details
- if(["bald-glasses","muffler-glasses","dark-glasses"].includes(f.look)){ctx.strokeStyle=f.look==="dark-glasses"?"#101218":"#24232a";ctx.lineWidth=3;ctx.fillStyle=f.look==="dark-glasses"?"#171a20":"#d7e0e5";ctx.fillRect(-17,-185,14,8);ctx.fillRect(3,-185,14,8);ctx.strokeRect(-18,-187,16,12);ctx.strokeRect(2,-187,16,12);ctx.beginPath();ctx.moveTo(-2,-181);ctx.lineTo(2,-181);ctx.stroke();}
+ if(["bald-glasses","muffler-glasses","dark-glasses","spectacles","black-glasses"].includes(f.look)){ctx.strokeStyle=(f.look==="dark-glasses"||f.look==="black-glasses")?"#101218":"#24232a";ctx.lineWidth=3;ctx.fillStyle=(f.look==="dark-glasses"||f.look==="black-glasses")?"#171a20":"#d7e0e5";ctx.fillRect(-17,-185,14,8);ctx.fillRect(3,-185,14,8);ctx.strokeRect(-18,-187,16,12);ctx.strokeRect(2,-187,16,12);ctx.beginPath();ctx.moveTo(-2,-181);ctx.lineTo(2,-181);ctx.stroke();}
  if(["white-beard","bald-glasses","white-tee-beard","muffler-glasses","dark-glasses"].includes(f.look)){ctx.fillStyle=f.look==="white-beard"?"#f2eee4":"#35251f";ctx.beginPath();ctx.ellipse(0,-158,13,6,0,0,Math.PI*2);ctx.fill();}
  if(f.look==="white-beard"){ctx.fillStyle="#f1eee5";ctx.beginPath();ctx.moveTo(-15,-166);ctx.quadraticCurveTo(0,-153,15,-166);ctx.lineTo(10,-146);ctx.lineTo(-10,-146);ctx.closePath();ctx.fill();}
  if(f.look==="red-cap"){ctx.fillStyle="#34241f";ctx.beginPath();ctx.ellipse(0,-158,12,4,0,0,Math.PI*2);ctx.fill();}
