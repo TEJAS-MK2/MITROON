@@ -1,6 +1,6 @@
 # MITROON
 
-**Apna Arena.** MITROON is an original Indian-inspired 2D arcade fighting game. Challenge the CPU locally or invite a friend into a private online room.
+**Apna Arena.** MITROON is an original Indian-inspired 2D arcade fighting game. Choose from an original roster of fictional Indian political caricatures, challenge the CPU locally or invite a friend into a private online room.
 
 ## Play locally
 
@@ -10,7 +10,7 @@ No build step is needed for the browser game.
 2. Choose **Fight the CPU**.
 3. Press **Start Fight**.
 
-### Controls
+### Roster and match setup\n\nThe current prototype includes eight original fictional political archetypes: Chai Shastri, Rally Rani, Budget Babu, Kursi Kumar, Kisan Kesari, Metro Maharaj, Manifesto Master and Janta Jawan. Their power and speed attributes affect combat. Choose an opponent, one of three stage themes (Sansad, Jantar Mantar or Desi Gully), and CPU difficulty (Easy, Normal or Hard).\n\nAll characters are invented satirical game characters, not portrayals or endorsements of real politicians or political parties. The project is nonpartisan entertainment and does not make factual claims about real people.\n\n## Controls
 
 | Action | Keyboard | Touch |
 |---|---|---|
@@ -58,7 +58,7 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 ## Roadmap
 
 - [x] Responsive arcade landing page and arena UI
-- [x] Playable local CPU duel prototype
+- [x] Playable local CPU duel prototype\n- [x] Eight-character fictional Indian political satire roster\n- [x] Character attributes, opponent selection, three stage themes and CPU difficulty
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
 - [ ] Character select, additional fighters and stages
