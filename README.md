@@ -31,7 +31,7 @@ npm install
 npm start
 ```
 
-The server listens on `PORT` (default `8080`) and exposes `/health`. Deploy it to a Node-compatible host that supports WebSockets. Use the resulting secure WebSocket URL (`wss://...`) in the game's **Play with a friend** panel. One player creates a room and shares the six-character code; the other joins with that code.
+The server listens on `PORT` (default `8080`) and exposes `/health`. The included `render.yaml` is a Render Blueprint: create a new Blueprint from this repository and deploy the `mitroon-realtime` service. Copy its HTTPS host, change the scheme to `wss://`, and paste that URL into the game's **Play with a friend** panel. Any Node-compatible host with WebSocket support also works. One player creates a room and shares the six-character code; the other joins with that code.
 
 **Current multiplayer scope:** private two-player room creation/joining and real-time state relay are implemented as an early prototype. The game is not yet authoritative against cheating, and matchmaking, persistence, accounts, ranked play, voice chat and tournaments are not implemented.
 
