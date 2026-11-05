@@ -45,7 +45,7 @@ No build step is needed for the browser game.
 | Special | L (requires energy) | SPECIAL |
 | Block | S | BLOCK |
 
-## Arenas and difficulty
+## Match rules, tournament and leaderboard\n\nMatches use a best-of-three round system: the first fighter to win two rounds takes the match. Tournament Run pits your selected fighter against every other roster member in sequence. Match wins, losses and cup victories are stored locally in your browser using `localStorage`; clearing browser site data removes those records. The leaderboard is device-local and is not a global or server-synchronised ranking.\n\n## Arenas and difficulty
 
 Choose Sansad at Sunset, Jantar Mantar or Desi Gully. CPU difficulty can be set to Easy, Normal or Hard.
 
@@ -92,7 +92,7 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
 - [ ] More fighters, stages and signature animations
-- [ ] Improved combat animation, audio and accessibility
+- [x] Best-of-three match scoring and round progression\n- [x] Single-player tournament run and local persistent leaderboard\n- [ ] Improved combat animation, audio and accessibility
 - [ ] Server-authoritative combat, reconnection and abuse protection
 - [ ] Automated gameplay tests and production monitoring
 
