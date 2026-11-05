@@ -17,8 +17,8 @@ const SCORE_KEY="mitroon-leaderboard-v1";
 function loadScores(){try{return JSON.parse(localStorage.getItem(SCORE_KEY)||"[]").filter(x=>x&&typeof x.name==="string"&&Number.isFinite(x.wins)&&Number.isFinite(x.losses));}catch{return [];}}
 function saveResult(won,tournament=false){const scores=loadScores(),name=roster[selectedHero].name;let row=scores.find(x=>x.name===name);if(!row){row={name,wins:0,losses:0,tournaments:0};scores.push(row);}if(won)row.wins++;else row.losses++;if(tournament&&won)row.tournaments=(row.tournaments||0)+1;scores.sort((a,b)=>b.tournaments-a.tournaments||b.wins-a.wins||a.losses-b.losses);try{localStorage.setItem(SCORE_KEY,JSON.stringify(scores.slice(0,10)));}catch{}renderLeaderboard();}
 function renderLeaderboard(){const el=$("leaderboardList");if(!el)return;const rows=loadScores();el.innerHTML=rows.length?rows.map((x,i)=>`<div class="leader-row"><b>${i+1}. ${escapeText(x.name)}</b><span>${x.wins} W · ${x.losses} L · ${x.tournaments||0} cups</span></div>`).join(""):'<p class="leader-empty">No records yet. Win your first match to claim the board.</p>';}
-function escapeText(value){return String(value).replace(/[&<>"\']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;", "\\'":"&#39;"}[c]));}
-function updateScoreboard(){$("roundScore").textContent=`${roundWins[0]} — ${roundWins[1]}`;$ ("roundNumber").textContent=String(roundNumber).padStart(2,"0");}
+function escapeText(value){return String(value).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function updateScoreboard(){$("roundScore").textContent=`${roundWins[0]} — ${roundWins[1]}`;$("roundNumber").textContent=String(roundNumber).padStart(2,"0");}
 const roster=[
 {name:"NARENDRA MODI",party:"BJP",role:"PRIME-TIME CAMPAIGNER",initials:"NM",color:"#d9773c",accent:"#f7c56c",look:"white-beard",special:"VIKAS VOLT",power:3,speed:3},
 {name:"AMIT SHAH",party:"BJP",role:"ORGANISATION STRATEGIST",initials:"AS",color:"#4d8b79",accent:"#a5dfc6",look:"bald-glasses",special:"ORGANISATION GRID",power:4,speed:2},
