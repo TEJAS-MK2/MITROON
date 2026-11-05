@@ -1,6 +1,23 @@
 # MITROON
 
-**Apna Arena.** MITROON is an original Indian-inspired 2D arcade fighting game. Choose from an original roster of fictional Indian political caricatures, challenge the CPU locally or invite a friend into a private online room.
+**Apna Arena.** MITROON is an Indian political-satire 2D arcade fighting game. Choose a caricature of a recognisable public political figure, challenge the CPU locally, or invite a friend into a private online room.
+
+## Political parody roster
+
+The current eight-fighter prototype includes public figures associated with different Indian political parties:
+
+| Fighter | Party association | Visual caricature cues |
+|---|---|---|
+| Narendra Modi | BJP | White beard and distinctive kurta/turban styling |
+| Amit Shah | BJP | Bald head, glasses and moustache |
+| Yogi Adityanath | BJP | Shaved head and saffron attire |
+| Rahul Gandhi | Indian National Congress | White T-shirt and beard |
+| Mamata Banerjee | All India Trinamool Congress | White sari with a contrasting border |
+| Arvind Kejriwal | Aam Aadmi Party | Glasses and muffler |
+| Akhilesh Yadav | Samajwadi Party | Red cap |
+| M. K. Stalin | Dravida Munnetra Kazhagam | Dark glasses and dark hair |
+
+Party labels are descriptive associations, not endorsements. Fighter power, speed, animations, attacks and match outcomes are fictional game mechanics; they do not represent real-world ability, character or political performance. MITROON is parody and is not affiliated with any politician or party. The artwork is original stylised game art, not official portraits or photographs.
 
 ## Play locally
 
@@ -8,9 +25,10 @@ No build step is needed for the browser game.
 
 1. Open `index.html` in a modern browser, or serve this folder with any static web server.
 2. Choose **Fight the CPU**.
-3. Press **Start Fight**.
+3. Select your fighter, opponent, arena and CPU difficulty.
+4. Press **Fight** and then **Start Fight**.
 
-### Roster and match setup\n\nThe current prototype includes eight original fictional political archetypes: Chai Shastri, Rally Rani, Budget Babu, Kursi Kumar, Kisan Kesari, Metro Maharaj, Manifesto Master and Janta Jawan. Their power and speed attributes affect combat. Choose an opponent, one of three stage themes (Sansad, Jantar Mantar or Desi Gully), and CPU difficulty (Easy, Normal or Hard).\n\nAll characters are invented satirical game characters, not portrayals or endorsements of real politicians or political parties. The project is nonpartisan entertainment and does not make factual claims about real people.\n\n## Controls
+## Controls
 
 | Action | Keyboard | Touch |
 |---|---|---|
@@ -20,6 +38,10 @@ No build step is needed for the browser game.
 | Kick | K | KICK |
 | Special | L (requires energy) | SPECIAL |
 | Block | S | BLOCK |
+
+## Arenas and difficulty
+
+Choose Sansad at Sunset, Jantar Mantar or Desi Gully. CPU difficulty can be set to Easy, Normal or Hard.
 
 ## Online friend rooms
 
@@ -58,10 +80,12 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 ## Roadmap
 
 - [x] Responsive arcade landing page and arena UI
-- [x] Playable local CPU duel prototype\n- [x] Eight-character fictional Indian political satire roster\n- [x] Character attributes, opponent selection, three stage themes and CPU difficulty
+- [x] Playable local CPU duel prototype
+- [x] Eight public-figure parody fighters from multiple parties
+- [x] Character attributes, opponent selection, three stage themes and CPU difficulty
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
-- [ ] Character select, additional fighters and stages
+- [ ] More fighters, stages and signature animations
 - [ ] Improved combat animation, audio and accessibility
 - [ ] Server-authoritative combat, reconnection and abuse protection
 - [ ] Automated gameplay tests and production monitoring
