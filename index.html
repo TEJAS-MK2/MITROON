@@ -45,7 +45,7 @@
       <div class="section-heading"><div><span class="eyebrow">PICK YOUR SIDE</span><h2>THE ARENA<br>IS YOURS.</h2></div><p>One fighter. One opponent.<br>Make every move count.</p></div>
       <div class="mode-grid">
         <article class="mode-card cpu-card"><div class="mode-number">01 / SOLO</div><div class="mode-icon">拳</div><h3>VS THE MACHINE</h3><p>Warm up against the CPU. Learn the moves, find your rhythm, own the arena.</p><button class="text-button" id="cpuCardButton">ENTER SOLO MODE <span>↗</span></button></article>
-        <article class="mode-card online-card"><div class="mode-number">02 / DUO</div><div class="mode-icon">双</div><h3>CALL A MITROON</h3><p>Create a private room, share the code and settle the score with a friend.</p><button class="text-button" id="onlineCardButton">CREATE A ROOM <span>↗</span></button></article>
+        <article class="mode-card tournament-card"><div class="mode-number">03 / CUP</div><div class="mode-icon">🏆</div><h3>TOURNAMENT RUN</h3><p>Take on every rival in a knockout run. Win matches, lift the cup and leave your mark.</p><button class="text-button" id="tournamentButton">ENTER THE CUP <span>↗</span></button></article><article class="mode-card online-card"><div class="mode-number">02 / DUO</div><div class="mode-icon">双</div><h3>CALL A MITROON</h3><p>Create a private room, share the code and settle the score with a friend.</p><button class="text-button" id="onlineCardButton">CREATE A ROOM <span>↗</span></button></article>
       </div>
     </section>
 
@@ -67,7 +67,7 @@
       <div class="game-shell">
         <div class="hud">
           <div class="player-hud"><div class="player-name" id="leftName">YOU <span>01</span></div><div class="health-track"><div class="health-fill" id="leftHealth"></div></div><div class="hud-sub">THE CHALLENGER</div></div>
-          <div class="round-indicator"><span>ROUND</span><strong>01</strong></div>
+          <div class="round-indicator"><span>ROUND <b id="roundNumber">01</b></span><strong id="roundScore">0 — 0</strong></div>
           <div class="player-hud player-hud-right"><div class="player-name" id="rightName">CPU <span>02</span></div><div class="health-track"><div class="health-fill" id="rightHealth"></div></div><div class="hud-sub">THE OPPONENT</div></div>
         </div>
         <div class="arena-wrap"><canvas id="arena" width="960" height="440" aria-label="MITROON fighting arena"></canvas><div class="arena-overlay" id="arenaOverlay"><div class="overlay-kicker">MITROON FIGHT NIGHT</div><div class="overlay-title" id="overlayTitle">READY?</div><div class="overlay-message" id="overlayMessage">Step into the arena.</div><button class="btn btn-primary" id="startFight">START FIGHT <span class="btn-arrow">↗</span></button></div></div>
