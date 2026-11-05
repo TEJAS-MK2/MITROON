@@ -19,3 +19,7 @@
 .rotate-hint{display:none;position:absolute;z-index:3;inset:0;align-items:center;justify-content:center;text-align:center;padding:22px;background:#080b12eF;color:#ffbd74;font:900 16px "Barlow Condensed";letter-spacing:2px}
 @media(max-width:760px) and (orientation:portrait){.rotate-hint{display:flex}.arena-wrap canvas{opacity:.14}.touch-controls{flex-wrap:wrap;gap:8px}.touch-group{flex-wrap:wrap}.touch-group button{min-width:40px;min-height:42px}}
 @media(orientation:landscape) and (max-height:560px){.topbar{height:44px}.game-section{padding:8px 12px 18px}.game-heading{margin-bottom:8px}.game-heading h2{font-size:28px}.game-shell{padding:6px}.hud{padding:2px 8px 6px}.arena-wrap canvas{max-height:58vh}.touch-controls{padding-top:6px}.touch-group button{min-height:34px}.game-bottom{padding:5px}.control-hint{display:flex;font-size:7px}}
+
+.energy-track{height:5px;background:#292f3a;margin:5px 0 6px;overflow:hidden;transform:skewX(-12deg)}
+.energy-fill{height:100%;width:0;background:linear-gradient(90deg,#6c8fff,#d4b5ff);box-shadow:0 0 12px #a58cff;transition:width .15s}
+.player-hud-right .energy-fill{margin-left:auto}
