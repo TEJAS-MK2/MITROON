@@ -108,3 +108,11 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+
+## Fight-night controls (expanded)
+- Move: A/D or arrow keys; jump: W/Up.
+- Crouch: Down Arrow; block: S; punch: J; kick: K; grab: I; super: L (requires a full energy meter).
+- Combo strings: J-J-J, J-J-K, J-K-K, K-K, Down-J-J, Down-J-K, Right-J and Right-K.
+- Touch controls are available on phones; landscape orientation gives the widest arena view.
+- MITROON uses its own original branding, character art and interface while taking inspiration from the broader arcade political-fighter genre.
