@@ -47,7 +47,7 @@ No build step is needed for the browser game.
 | Action | Keyboard | Touch |
 |---|---|---|
 | Move | A / D | ◀ / ▶ |
-| Jump | W | ▲ |
+| Jump | W / Up Arrow | ▲ |\n| Crouch | Down Arrow | CROUCH |\n| Grab | I | GRAB |
 | Punch | J | PUNCH |
 | Kick | K | KICK |
 | Special | L (requires energy) | SPECIAL |
@@ -100,7 +100,7 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
 - [x] Expanded the parody roster to sixteen fighters across multiple parties
-- [ ] More stages and signature animations
+- [x] Stage-specific arena backdrops and fight-night presentation\n- [x] Hit feedback, improved movement posing and smarter CPU guarding\n- [ ] Dedicated hand-drawn sprite sheets and frame-authored animation sets
 - [x] Best-of-three match scoring and round progression\n- [x] Single-player tournament run and local persistent leaderboard\n- [ ] Improved combat animation, audio and accessibility
 - [ ] Server-authoritative combat, reconnection and abuse protection
 - [ ] Automated gameplay tests and production monitoring
@@ -116,3 +116,14 @@ MIT. See [LICENSE](LICENSE).
 - Combo strings: J-J-J, J-J-K, J-K-K, K-K, Down-J-J, Down-J-K, Right-J and Right-K.
 - Touch controls are available on phones; landscape orientation gives the widest arena view.
 - MITROON uses its own original branding, character art and interface while taking inspiration from the broader arcade political-fighter genre.
+
+
+## MITROON 2.0 scope and current limitations
+
+This release improves the existing canvas-rendered fighter poses, hit feedback, stage presentation, CPU guarding, and the pre-fight VS announcement. It remains a lightweight procedural-art browser game; it does not yet ship hand-drawn sprite sheets, frame-authored animation timelines, character-specific story endings, or online multiplayer service infrastructure. Online room controls remain a separate prototype and require an independently operated WebSocket service. Do not treat the local leaderboard as a global ranking.
+
+## Quality checks
+
+- Run `node --check game.js` to validate JavaScript syntax.
+- Follow `docs/ACCEPTANCE.md` for browser gameplay and responsive checks.
+- Review `SECURITY.md` before reporting vulnerabilities.
