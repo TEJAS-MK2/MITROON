@@ -9,7 +9,8 @@ const fighters=[
  {x:230,y:floor,vx:0,vy:0,hp:100,maxHp:100,face:1,color:"#f07838",accent:"#ffc46b",name:"YOU",grounded:true,attack:0,attackType:"",cooldown:0,block:false,stun:0,energy:0},
  {x:730,y:floor,vx:0,vy:0,hp:100,maxHp:100,face:-1,color:"#3b8fc7",accent:"#a5e0ff",name:"CPU",grounded:true,attack:0,attackType:"",cooldown:0,block:false,stun:0,energy:0}
 ];
-const input={left:false,right:false,jump:false,punch:false,kick:false,special:false,block:false};
+const input={left:false,right:false,jump:false,punch:false,kick:false,special:false,block:false,crouch:false,grab:false};
+let comboBuffer=[],comboTimer=0;
 const particles=[];
 let pendingMode="cpu",selectedHero=0,selectedCpu=1,selectedStage="sansad",difficulty="normal";
 let roundWins=[0,0],roundNumber=1,matchComplete=false,tournamentActive=false,tournamentOpponents=[],tournamentIndex=0;
@@ -62,13 +63,35 @@ function setMode(next){
  selectSection.classList.add("hidden");
  showGame(next==="tournament"?"TOURNAMENT RUN":next==="cpu"?"CPU CHALLENGE":"FRIEND DUEL",next==="tournament"?"Defeat every rival and claim the cup.":next==="cpu"?"A challenger approaches.":"Your friend is in the arena.");
 }
-function setInput(k,on){if(k==="a")input.left=on;if(k==="d")input.right=on;if(k==="w")input.jump=on;if(k==="j")input.punch=on;if(k==="k")input.kick=on;if(k==="l")input.special=on;if(k==="s")input.block=on;}
-function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.42:.25;f.attackType=type;f.cooldown=type==="special"?.9:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+22);}
-function damage(attacker,target,type){const range=type==="special"?145:type==="kick"?110:88;if(Math.abs(attacker.x-target.x)>range||Math.abs(attacker.y-target.y)>90)return;if(target.block){target.hp=Math.max(0,target.hp-(type==="special"?5:2));target.stun=.06;spawn(target.x,target.y-65,"#a9d7f2",5);return;}const amount=Math.round((type==="special"?24:type==="kick"?13:8)*(attacker.power||3)/3);target.hp=Math.max(0,target.hp-amount);target.stun=.18;target.vx=attacker.face*(type==="special"?460:240);target.vy=type==="special"?-230:-80;screenShake=type==="special"?13:6;spawn(target.x,target.y-75,type==="special"?"#ffbe55":"#f4e6d0",type==="special"?24:10);updateHud();if(target.hp<=0)finish(attacker);}
+function setInput(k,on){if(k==="a"||k==="ArrowLeft")input.left=on;if(k==="d"||k==="ArrowRight")input.right=on;if(k==="w"||k==="ArrowUp")input.jump=on;if(k==="j")input.punch=on;if(k==="k")input.kick=on;if(k==="l"||k===" ")input.special=on;if(k==="s")input.block=on;if(k==="ArrowDown")input.crouch=on;if(k==="i")input.grab=on;}
+function registerComboKey(k){
+ if(!running||mode==="online"&&playerId===2)return;
+ if(comboTimer>0)comboBuffer.push(k);else comboBuffer=[k];
+ comboTimer=.48;comboBuffer=comboBuffer.slice(-4);
+ const seq=comboBuffer.join("");
+ const combos={"jjj":3,"jjk":3,"jkk":3,"kk":2,"sjj":3,"sjk":3,"dj":2,"dk":2,"sk":2};
+ const power=combos[seq];
+ if(power){const f=fighters[mode==="online"&&playerId===2?1:0];if(power===2||power===3){attack(f,"combo");f.comboPower=power;spawn(f.x,f.y-125,f.accent,8);}}
+}
+function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.46:type==="grab"?.32:type==="combo"?.34:.25;f.attackType=type;f.cooldown=type==="special"?1:type==="grab"?.62:type==="combo"?.48:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+(type==="grab"?12:18));}
+function damage(attacker,target,type){
+ const range=type==="special"?155:type==="grab"?105:type==="combo"?118:type==="kick"?112:88;
+ if(Math.abs(attacker.x-target.x)>range||Math.abs(attacker.y-target.y)>(type==="grab"?75:90))return;
+ if(target.block&&type!=="grab"){target.hp=Math.max(0,target.hp-(type==="special"?5:2));target.stun=.06;spawn(target.x,target.y-65,"#a9d7f2",5);return;}
+ if(target.crouch&&type==="punch")return;
+ const base=type==="special"?25:type==="grab"?17:type==="combo"?10+(attacker.comboPower||2)*3:type==="kick"?13:8;
+ const amount=Math.round(base*(attacker.power||3)/3);
+ target.hp=Math.max(0,target.hp-amount);target.stun=type==="grab"?.28:.18;
+ target.vx=attacker.face*(type==="special"?460:type==="grab"?330:240);
+ target.vy=type==="special"?-230:type==="grab"?-120:-80;
+ screenShake=type==="special"?14:type==="grab"?9:6;
+ spawn(target.x,target.y-75,type==="special"?"#ffbe55":type==="grab"?"#d8b7ff":"#f4e6d0",type==="special"?28:type==="combo"?18:12);
+ updateHud();if(target.hp<=0)finish(attacker);
+}
 function finish(winner){if(roundOver)return;roundOver=true;running=false;fighters.forEach(f=>f.celebrate=f===winner);const localIndex=playerId===2?1:0,localWinner=winner===fighters[localIndex];if(localWinner)roundWins[localIndex]++;else roundWins[1-localIndex]++;updateScoreboard();if(roundWins[localIndex]>=2||roundWins[1-localIndex]>=2){matchComplete=true;const won=roundWins[localIndex]>=2;saveResult(won,false);$("overlayTitle").textContent=won?"MATCH WON!":"MATCH LOST";$("overlayMessage").textContent=won?"Two rounds secured. You own this arena.":"That one got away. Reset, adapt and run it back.";if(tournamentActive&&won){$("overlayMessage").textContent="Match secured. One step closer to the MITROON cup.";}$("startFight").textContent=tournamentActive&&won?"NEXT RIVAL":"REMATCH";}else{$("overlayTitle").textContent=localWinner?"ROUND WON!":"ROUND LOST";$("overlayMessage").textContent=`Round ${roundNumber} complete. First to two rounds takes the match.`;$("startFight").textContent="NEXT ROUND";}$("arenaOverlay").classList.remove("hidden");}
 function spawn(x,y,color,n){for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*420,vy:(Math.random()-.8)*-350,life:.35+Math.random()*.45,color,size:2+Math.random()*5});}
 function cpuThink(f,enemy,dt){const d=enemy.x-f.x,ad=Math.abs(d),skill=difficulty==="easy"?.65:difficulty==="hard"?1.5:1;f.block=ad<105&&Math.random()<.012*skill;if(ad>105){f.vx=Math.sign(d)*115*(f.speed||3)/3*skill;if(Math.random()<.003*skill)f.vy=-540;}else{f.vx=0;if(Math.random()<.014*skill)attack(f,Math.random()<.3&&f.energy>=70?"special":Math.random()<.55?"kick":"punch");}}
-function updateFighter(f,other,dt,local){f.cooldown=Math.max(0,f.cooldown-dt);f.attack=Math.max(0,f.attack-dt);f.stun=Math.max(0,f.stun-dt);if(f.stun<=0){if(local){f.block=input.block;f.vx=(input.right?1:0)-(input.left?1:0);f.vx*=235*(f.speed||3)/3;if(input.jump&&f.grounded){f.vy=-610;f.grounded=false;}if(input.punch)attack(f,"punch");if(input.kick)attack(f,"kick");if(input.special&&f.energy>=70)attack(f,"special");}else if(mode==="cpu")cpuThink(f,other,dt);else if(remoteState){f.x+=(remoteState.x-f.x)*Math.min(1,dt*15);f.y+=(remoteState.y-f.y)*Math.min(1,dt*15);f.hp=remoteState.hp;updateHud();if(f.hp<=0)finish(other);if(Number.isInteger(remoteState.characterIndex)&&roster[remoteState.characterIndex])applyRosterFighter(f,roster[remoteState.characterIndex]);f.block=remoteState.block;f.attack=remoteState.attack;f.attackType=remoteState.attackType;f.face=remoteState.face;}}
+function updateFighter(f,other,dt,local){f.cooldown=Math.max(0,f.cooldown-dt);f.attack=Math.max(0,f.attack-dt);f.stun=Math.max(0,f.stun-dt);f.crouch=!!(local&&input.crouch);if(f.stun<=0){if(local){f.block=input.block;f.vx=(input.right?1:0)-(input.left?1:0);f.vx*=235*(f.speed||3)/3*(f.crouch?.45:1);if(input.jump&&f.grounded&&!f.crouch){f.vy=-610;f.grounded=false;}if(input.punch)attack(f,"punch");if(input.kick)attack(f,"kick");if(input.grab)attack(f,"grab");if(input.special&&f.energy>=70)attack(f,"special");}else if(mode==="cpu")cpuThink(f,other,dt);else if(remoteState){f.x+=(remoteState.x-f.x)*Math.min(1,dt*15);f.y+=(remoteState.y-f.y)*Math.min(1,dt*15);f.hp=remoteState.hp;updateHud();if(f.hp<=0)finish(other);if(Number.isInteger(remoteState.characterIndex)&&roster[remoteState.characterIndex])applyRosterFighter(f,roster[remoteState.characterIndex]);f.block=remoteState.block;f.attack=remoteState.attack;f.attackType=remoteState.attackType;f.face=remoteState.face;}}
 if(f.attack>0&&f.attackType&&!f.hitDone){f.hitDone=true;damage(f,other,f.attackType);}if(f.attack<=0)f.hitDone=false;
 if(!(mode==="online"&&!local&&remoteState)){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=gravity*dt;if(f.y>=floor){f.y=floor;f.vy=0;f.grounded=true;}}f.x=Math.max(65,Math.min(895,f.x));if(local||mode==="cpu")f.face=other.x>f.x?1:-1;
 }
@@ -79,7 +102,7 @@ function drawFighter(f){
  const attackReach=[44,58,78,56][attackFrame],attackLift=[-104,-132,-158,-124][attackFrame];
  const victoryFrame=Math.floor(t*5)%4,victoryLift=[-172,-194,-208,-188][victoryFrame];
  const walkFrame=Math.floor(t*10)%4,walkStride=[-5,0,5,0][walkFrame];
- ctx.save();ctx.translate(f.x,f.y+bob);ctx.scale(f.face||1,1);
+ ctx.save();ctx.translate(f.x,f.y+bob+(f.crouch?15:0));ctx.scale(f.face||1,1);if(f.crouch)ctx.scale(1,.78);
  // Ground shadow and character silhouette
  ctx.fillStyle="#0009";ctx.beginPath();ctx.ellipse(0,3,48,9,0,0,Math.PI*2);ctx.fill();
  if(celebrating){ctx.translate(0,-Math.abs(Math.sin(t*5))*5);}
@@ -144,7 +167,7 @@ ctx.fillStyle="#ffbd74";ctx.font="800 11px DM Sans";ctx.fillText("MITROON FIGHT 
 drawFighter(fighters[0]);drawFighter(fighters[1]);
 particles.forEach(p=>{ctx.globalAlpha=Math.max(0,p.life);ctx.fillStyle=p.color;ctx.fillRect(p.x,p.y,p.size,p.size);});ctx.globalAlpha=1;
 }
-function loop(t){const dt=Math.min(.032,(t-lastTime)/1000||0);lastTime=t;if(running){const localIndex=mode==="online"&&playerId===2?1:0,remoteIndex=1-localIndex;updateFighter(fighters[localIndex],fighters[remoteIndex],dt,true);if(mode==="cpu")updateFighter(fighters[1],fighters[0],dt,false);else if(mode==="online"&&remoteState)updateFighter(fighters[remoteIndex],fighters[localIndex],dt,false);if(mode==="online"&&socket?.readyState===1&&t-lastSent>45){const own=fighters[localIndex];socket.send(JSON.stringify({type:"state",room,playerId,state:{x:own.x,y:own.y,hp:own.hp,block:own.block,attack:own.attack,attackType:own.attackType,face:own.face,characterIndex:selectedHero}}));lastSent=t;}}
+function loop(t){const dt=Math.min(.032,(t-lastTime)/1000||0);lastTime=t;comboTimer=Math.max(0,comboTimer-dt);if(comboTimer===0)comboBuffer=[];if(running){const localIndex=mode==="online"&&playerId===2?1:0,remoteIndex=1-localIndex;updateFighter(fighters[localIndex],fighters[remoteIndex],dt,true);if(mode==="cpu")updateFighter(fighters[1],fighters[0],dt,false);else if(mode==="online"&&remoteState)updateFighter(fighters[remoteIndex],fighters[localIndex],dt,false);if(mode==="online"&&socket?.readyState===1&&t-lastSent>45){const own=fighters[localIndex];socket.send(JSON.stringify({type:"state",room,playerId,state:{x:own.x,y:own.y,hp:own.hp,block:own.block,attack:own.attack,attackType:own.attackType,face:own.face,characterIndex:selectedHero}}));lastSent=t;}}
 particles.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=900*dt;p.life-=dt;});for(let i=particles.length-1;i>=0;i--)if(particles[i].life<=0)particles.splice(i,1);if(screenShake>0)screenShake=Math.max(0,screenShake-dt*30);draw();requestAnimationFrame(loop);}
 function start(){if(mode==="online"&&!socket){$("overlayMessage").textContent="Connect to a multiplayer server first.";return;}if(roundOver){if(matchComplete){if(tournamentActive){if(roundWins[0]>=2){tournamentIndex++;if(tournamentIndex>=tournamentOpponents.length){const board=loadScores(),row=board.find(x=>x.name===roster[selectedHero].name);if(row){row.tournaments=(row.tournaments||0)+1;try{localStorage.setItem(SCORE_KEY,JSON.stringify(board));}catch{}renderLeaderboard();}tournamentActive=false;$("overlayTitle").textContent="MITROON CUP CHAMPION!";$("overlayMessage").textContent="Every rival defeated. The cup is yours.";$("startFight").textContent="PLAY AGAIN";$("arenaOverlay").classList.remove("hidden");return;}applyRosterFighter(fighters[1],roster[tournamentOpponents[tournamentIndex]]);$("rightName").textContent=roster[tournamentOpponents[tournamentIndex]].name;}else{tournamentActive=false;}}roundWins=[0,0];roundNumber=1;matchComplete=false;}else roundNumber++;fighters.forEach((f,i)=>Object.assign(f,{x:i?730:230,y:floor,vx:0,vy:0,hp:100,grounded:true,attack:0,attackType:"",cooldown:0,block:false,stun:0,energy:0,celebrate:false}));updateHud();updateScoreboard();roundOver=false;}running=true;$("arenaOverlay").classList.add("hidden");$("startFight").textContent="START FIGHT";}
 function connect(action){const url=$("serverUrl").value.trim();if(!url){$("roomFeedback").textContent="Add your multiplayer server URL first.";return;}try{socket=new WebSocket(url);}catch(e){$("roomFeedback").textContent="That server URL doesn't look right.";return;}
@@ -164,9 +187,9 @@ $("confirmFight").onclick=()=>setMode(pendingMode);
 $("cancelSelect").onclick=()=>{selectSection.classList.add("hidden");home.classList.remove("hidden");modes.classList.remove("hidden");};
 $("backHome").onclick=()=>{running=false;if(socket){socket.close();socket=null;}gameSection.classList.add("hidden");selectSection.classList.add("hidden");home.classList.remove("hidden");modes.classList.remove("hidden");};
 $("soundToggle").onclick=()=>{muted=!muted;$("soundToggle").textContent="SOUND: "+(muted?"OFF":"ON");};
-window.addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["a","d","w","s","j","k","l"," "].includes(k))e.preventDefault();keys.add(k);setInput(k,true);});
+window.addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["a","d","w","s","j","k","l","i"," ","ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(k))e.preventDefault();keys.add(k);setInput(k,true);if(["j","k"].includes(k))registerComboKey(k);});
 window.addEventListener("keyup",e=>{const k=e.key.toLowerCase();keys.delete(k);setInput(k,false);});
-document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setInput(k,true);});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();setInput(k,false);}));});
+document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setInput(k,true);if(["j","k"].includes(k))registerComboKey(k);});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();setInput(k,false);}));});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){Object.keys(input).forEach(k=>input[k]=false);}});
 requestAnimationFrame(loop);
 })();
