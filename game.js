@@ -13,18 +13,18 @@ const input={left:false,right:false,jump:false,punch:false,kick:false,special:fa
 const particles=[];
 let pendingMode="cpu",selectedHero=0,selectedCpu=1,selectedStage="sansad",difficulty="normal";
 const roster=[
-{name:"CHAI SHASTRI",role:"THE PEOPLE'S CAMPAIGNER",initials:"CS",color:"#d9773c",accent:"#f7c56c",look:"turban",power:3,speed:3},
-{name:"RALLY RANI",role:"THE CROWD CONNECTOR",initials:"RR",color:"#b94c6a",accent:"#ffb2c5",look:"scarf",power:2,speed:5},
-{name:"BUDGET BABU",role:"THE POLICY MACHINE",initials:"BB",color:"#4d8b79",accent:"#a5dfc6",look:"glasses",power:5,speed:2},
-{name:"KURSI KUMAR",role:"THE COALITION CRAFTER",initials:"KK",color:"#6f68a8",accent:"#c3bcff",look:"cap",power:3,speed:4},
-{name:"KISAN KESARI",role:"THE FIELD MARSHAL",initials:"KI",color:"#9a813b",accent:"#f3d77b",look:"headband",power:5,speed:2},
-{name:"METRO MAHARAJ",role:"THE INFRA SHOWMAN",initials:"MM",color:"#3f7f9e",accent:"#9edcf1",look:"glasses",power:3,speed:4},
-{name:"MANIFESTO MASTER",role:"THE PROMISE SPECIALIST",initials:"MA",color:"#a35f9c",accent:"#e9b6e2",look:"moustache",power:4,speed:3},
-{name:"JANTA JAWAN",role:"THE GRASSROOTS GUARD",initials:"JJ",color:"#65844a",accent:"#c3e49a",look:"headband",power:3,speed:5}
+{name:"NARENDRA MODI",party:"BJP",role:"PRIME-TIME CAMPAIGNER",initials:"NM",color:"#d9773c",accent:"#f7c56c",look:"white-beard",power:3,speed:3},
+{name:"AMIT SHAH",party:"BJP",role:"ORGANISATION STRATEGIST",initials:"AS",color:"#4d8b79",accent:"#a5dfc6",look:"bald-glasses",power:4,speed:2},
+{name:"YOGI ADITYANATH",party:"BJP",role:"SAFFRON-ROBED CHALLENGER",initials:"YA",color:"#b66a2c",accent:"#ffd28a",look:"shaved-saffron",power:4,speed:3},
+{name:"RAHUL GANDHI",party:"INC",role:"WHITE-TEE ROAD WARRIOR",initials:"RG",color:"#477fba",accent:"#b8dfff",look:"white-tee-beard",power:3,speed:4},
+{name:"MAMATA BANERJEE",party:"AITC",role:"BENGAL STREET FIGHTER",initials:"MB",color:"#4f9b8a",accent:"#d9f2e8",look:"white-sari",power:2,speed:5},
+{name:"ARVIND KEJRIWAL",party:"AAP",role:"MUFFLER-WEARING DEBATER",initials:"AK",color:"#b94c6a",accent:"#ffb2c5",look:"muffler-glasses",power:3,speed:4},
+{name:"AKHILESH YADAV",party:"SP",role:"RED-CAP PLAYMAKER",initials:"AY",color:"#a94343",accent:"#f2b0a8",look:"red-cap",power:3,speed:4},
+{name:"M. K. STALIN",party:"DMK",role:"DARK-GLASSES VETERAN",initials:"MK",color:"#6f68a8",accent:"#c3bcff",look:"dark-glasses",power:4,speed:3}
 ];
 function renderRoster(){
  const grid=$("rosterGrid");grid.innerHTML="";
- roster.forEach((r,i)=>{const card=document.createElement("button");card.type="button";card.className="roster-card"+(i===selectedHero?" selected":"");card.innerHTML='<span class="pick-tag">'+(i===selectedHero?"YOUR NETA":"SELECT")+'</span><span class="roster-avatar" style="background:'+r.color+'">'+r.initials+'</span><span class="roster-name">'+r.name+'</span><span class="roster-role">'+r.role+'</span><span class="roster-stats">POWER <b>'+r.power+'</b> SPEED <b>'+r.speed+'</b></span>';card.addEventListener("click",()=>{selectedHero=i;renderRoster();});grid.appendChild(card);});
+ roster.forEach((r,i)=>{const card=document.createElement("button");card.type="button";card.className="roster-card"+(i===selectedHero?" selected":"");card.innerHTML='<span class="pick-tag">'+(i===selectedHero?"YOUR NETA":"SELECT")+'</span><span class="roster-avatar" style="background:'+r.color+'">'+r.initials+'</span><span class="roster-name">'+r.name+'</span><span class="roster-party">'+r.party+'</span><span class="roster-role">'+r.role+'</span><span class="roster-stats">GAME POWER <b>'+r.power+'</b> SPEED <b>'+r.speed+'</b></span>';card.addEventListener("click",()=>{selectedHero=i;renderRoster();});grid.appendChild(card);});
  const opponent=$("opponentSelect");opponent.innerHTML=roster.map((r,i)=>'<option value="'+i+'">'+r.name+'</option>').join("");opponent.value=String(selectedCpu);
 }
 function openSelect(next){pendingMode=next;home.classList.add("hidden");modes.classList.add("hidden");gameSection.classList.add("hidden");onlinePanel.classList.add("hidden");selectSection.classList.remove("hidden");renderRoster();}
@@ -58,15 +58,18 @@ if(!(mode==="online"&&!local&&remoteState)){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=grav
 function drawFighter(f){const x=f.x,y=f.y;ctx.save();ctx.translate(x,y);ctx.scale(f.face,1);ctx.fillStyle="#0008";ctx.beginPath();ctx.ellipse(0,3,48,9,0,0,Math.PI*2);ctx.fill();ctx.translate(0,f.grounded?0:Math.sin(performance.now()/75)*2);
 ctx.fillStyle=f.accent;ctx.fillRect(-25,-154,50,12);ctx.fillStyle="#171a22";ctx.fillRect(-23,-143,46,11);
 ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.roundRect(-19,-190,38,43,10);ctx.fill();
-if(f.look==="turban"){ctx.fillStyle=f.accent;ctx.beginPath();ctx.roundRect(-24,-199,48,18,8);ctx.fill();ctx.fillRect(-23,-187,46,7);}
-if(f.look==="cap"){ctx.fillStyle=f.accent;ctx.fillRect(-23,-198,46,10);ctx.fillRect(-27,-190,54,5);}
-if(f.look==="headband"){ctx.fillStyle=f.accent;ctx.fillRect(-22,-182,44,7);}
-if(f.look==="scarf"){ctx.fillStyle=f.accent;ctx.fillRect(-29,-144,58,13);ctx.fillRect(19,-138,12,54);}
-if(f.look==="glasses"){ctx.strokeStyle="#171a20";ctx.lineWidth=3;ctx.strokeRect(-17,-178,14,10);ctx.strokeRect(3,-178,14,10);ctx.beginPath();ctx.moveTo(-3,-174);ctx.lineTo(3,-174);ctx.stroke();}
-if(f.look==="moustache"){ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(0,-153,12,4,0,0,Math.PI*2);ctx.fill();}
+if(f.look==="white-beard"){ctx.fillStyle="#f0eee7";ctx.beginPath();ctx.roundRect(-18,-158,36,18,7);ctx.fill();ctx.fillRect(-13,-145,26,10);ctx.fillStyle=f.accent;ctx.beginPath();ctx.roundRect(-24,-199,48,18,8);ctx.fill();ctx.fillRect(-23,-187,46,7);}
+if(f.look==="bald-glasses"){ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.ellipse(0,-190,20,10,0,Math.PI,Math.PI*2);ctx.fill();ctx.strokeStyle="#171a20";ctx.lineWidth=3;ctx.strokeRect(-17,-178,14,10);ctx.strokeRect(3,-178,14,10);ctx.beginPath();ctx.moveTo(-3,-174);ctx.lineTo(3,-174);ctx.stroke();ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(0,-153,12,4,0,0,Math.PI*2);ctx.fill();}
+if(f.look==="shaved-saffron"){ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.ellipse(0,-190,20,8,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle="#f2a52b";ctx.fillRect(-28,-145,56,68);ctx.fillStyle="#ffd28a";ctx.fillRect(-5,-190,10,13);}
+if(f.look==="white-tee-beard"){ctx.fillStyle="#f1eee7";ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();ctx.fillStyle="#513c31";ctx.beginPath();ctx.roundRect(-17,-157,34,16,6);ctx.fill();}
+if(f.look==="white-sari"){ctx.fillStyle="#f4f0e6";ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();ctx.strokeStyle="#278b72";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-26,-143);ctx.lineTo(23,-90);ctx.stroke();ctx.fillStyle="#f4f0e6";ctx.fillRect(19,-138,12,54);}
+if(f.look==="muffler-glasses"){ctx.fillStyle="#d8d9dc";ctx.fillRect(-29,-144,58,13);ctx.fillRect(19,-138,12,54);ctx.strokeStyle="#171a20";ctx.lineWidth=3;ctx.strokeRect(-17,-178,14,10);ctx.strokeRect(3,-178,14,10);ctx.beginPath();ctx.moveTo(-3,-174);ctx.lineTo(3,-174);ctx.stroke();ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(0,-153,12,4,0,0,Math.PI*2);ctx.fill();}
+if(f.look==="red-cap"){ctx.fillStyle="#bd3434";ctx.fillRect(-23,-198,46,10);ctx.fillRect(-27,-190,54,5);}
+if(f.look==="dark-glasses"){ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(0,-190,20,8,0,Math.PI,Math.PI*2);ctx.fill();ctx.fillStyle="#171a20";ctx.fillRect(-21,-180,18,8);ctx.fillRect(3,-180,18,8);ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(0,-153,12,4,0,0,Math.PI*2);ctx.fill();}
+
 ctx.fillStyle="#191d26";ctx.fillRect(-21,-179,42,10);ctx.fillStyle="#fff";ctx.fillRect(7,-175,5,4);
 ctx.fillStyle=f.color;ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();
-ctx.fillStyle=f.accent;ctx.fillRect(-29,-91,58,9);
+ctx.fillStyle=f.accent;ctx.fillRect(-29,-91,58,9);if(f.look==="shaved-saffron")ctx.fillRect(-5,-184,10,13);
 ctx.strokeStyle="#a96c4d";ctx.lineWidth=16;ctx.lineCap="round";
 ctx.beginPath();ctx.moveTo(-24,-134);ctx.lineTo(-43,-99);ctx.stroke();
 ctx.beginPath();ctx.moveTo(24,-134);ctx.lineTo(f.attack>0?65:38,-(f.attack>0?118:99));ctx.stroke();
