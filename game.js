@@ -61,7 +61,7 @@ function setMode(next){
  $("rightName").textContent=next==="online"?"FRIEND":next==="tournament"?roster[tournamentOpponents[0]].name:roster[selectedCpu].name;
  $("connectionStatus").innerHTML=next==="tournament"?'<span class="live-dot"></span> TOURNAMENT RUN':next==="cpu"?'<span class="live-dot"></span> LOCAL MATCH':'<span class="live-dot"></span> PRIVATE ROOM';
  selectSection.classList.add("hidden");
- showGame(next==="tournament"?"TOURNAMENT RUN":next==="cpu"?"CPU CHALLENGE":"FRIEND DUEL",next==="tournament"?"Defeat every rival and claim the cup.":next==="cpu"?"A challenger approaches.":"Your friend is in the arena.");
+ showGame(next==="tournament"?"TOURNAMENT RUN":next==="cpu"?"CPU CHALLENGE":"FRIEND DUEL",next==="tournament"?"Defeat every rival and claim the cup.":next==="cpu"?"A challenger approaches.":"Your friend is in the arena.");\n $("overlayTitle").textContent="FIGHT NIGHT";$("overlayMessage").textContent=roster[selectedHero].name+"  VS  "+(next==="tournament"?roster[tournamentOpponents[0]].name:next==="cpu"?roster[selectedCpu].name:"YOUR MITROON")+" · BEST OF THREE";$("startFight").textContent="ENTER THE ARENA";
 }
 function setInput(k,on){if(k==="a"||k==="ArrowLeft")input.left=on;if(k==="d"||k==="ArrowRight")input.right=on;if(k==="w"||k==="ArrowUp")input.jump=on;if(k==="j")input.punch=on;if(k==="k")input.kick=on;if(k==="l"||k===" ")input.special=on;if(k==="s")input.block=on;if(k==="ArrowDown")input.crouch=on;if(k==="i")input.grab=on;}
 function registerComboKey(k){
@@ -83,7 +83,7 @@ function damage(attacker,target,type){
  if(target.crouch&&type==="punch")return;
  const base=type==="special"?25:type==="grab"?17:type==="combo"?10+(attacker.comboPower||2)*3:type==="kick"?13:8;
  const amount=Math.round(base*(attacker.power||3)/3);
- target.hp=Math.max(0,target.hp-amount);target.stun=type==="grab"?.28:.18;
+ target.hp=Math.max(0,target.hp-amount);target.stun=type==="grab"?.28:.18;target.hitFlash=.22;target.hitDirection=attacker.face;
  target.vx=attacker.face*(type==="special"?460:type==="grab"?330:240);
  target.vy=type==="special"?-230:type==="grab"?-120:-80;
  screenShake=type==="special"?14:type==="grab"?9:6;
@@ -92,13 +92,13 @@ function damage(attacker,target,type){
 }
 function finish(winner){if(roundOver)return;roundOver=true;running=false;fighters.forEach(f=>f.celebrate=f===winner);const localIndex=playerId===2?1:0,localWinner=winner===fighters[localIndex];if(localWinner)roundWins[localIndex]++;else roundWins[1-localIndex]++;updateScoreboard();if(roundWins[localIndex]>=2||roundWins[1-localIndex]>=2){matchComplete=true;const won=roundWins[localIndex]>=2;saveResult(won,false);$("overlayTitle").textContent=won?"MATCH WON!":"MATCH LOST";$("overlayMessage").textContent=won?"Two rounds secured. You own this arena.":"That one got away. Reset, adapt and run it back.";if(tournamentActive&&won){$("overlayMessage").textContent="Match secured. One step closer to the MITROON cup.";}$("startFight").textContent=tournamentActive&&won?"NEXT RIVAL":"REMATCH";}else{$("overlayTitle").textContent=localWinner?"ROUND WON!":"ROUND LOST";$("overlayMessage").textContent=`Round ${roundNumber} complete. First to two rounds takes the match.`;$("startFight").textContent="NEXT ROUND";}$("arenaOverlay").classList.remove("hidden");}
 function spawn(x,y,color,n){for(let i=0;i<n;i++)particles.push({x,y,vx:(Math.random()-.5)*420,vy:(Math.random()-.8)*-350,life:.35+Math.random()*.45,color,size:2+Math.random()*5});}
-function cpuThink(f,enemy,dt){const d=enemy.x-f.x,ad=Math.abs(d),skill=difficulty==="easy"?.65:difficulty==="hard"?1.5:1;f.block=ad<105&&Math.random()<.012*skill;if(ad>105){f.vx=Math.sign(d)*115*(f.speed||3)/3*skill;if(Math.random()<.003*skill)f.vy=-540;}else{f.vx=0;if(Math.random()<.014*skill)attack(f,Math.random()<.3&&f.energy>=70?"special":Math.random()<.55?"kick":"punch");}}
-function updateFighter(f,other,dt,local){f.cooldown=Math.max(0,f.cooldown-dt);f.attack=Math.max(0,f.attack-dt);f.stun=Math.max(0,f.stun-dt);f.crouch=!!(local&&input.crouch);if(f.stun<=0){if(local){f.block=input.block;f.vx=(input.right?1:0)-(input.left?1:0);f.vx*=235*(f.speed||3)/3*(f.crouch?.45:1);if(input.jump&&f.grounded&&!f.crouch){f.vy=-610;f.grounded=false;}if(input.punch)attack(f,"punch");if(input.kick)attack(f,"kick");if(input.grab)attack(f,"grab");if(input.special&&f.energy>=70)attack(f,"special");}else if(mode==="cpu")cpuThink(f,other,dt);else if(remoteState){f.x+=(remoteState.x-f.x)*Math.min(1,dt*15);f.y+=(remoteState.y-f.y)*Math.min(1,dt*15);f.hp=remoteState.hp;updateHud();if(f.hp<=0)finish(other);if(Number.isInteger(remoteState.characterIndex)&&roster[remoteState.characterIndex])applyRosterFighter(f,roster[remoteState.characterIndex]);f.block=remoteState.block;f.attack=remoteState.attack;f.attackType=remoteState.attackType;f.face=remoteState.face;}}
+function cpuThink(f,enemy,dt){const d=enemy.x-f.x,ad=Math.abs(d),skill=difficulty==="easy"?.65:difficulty==="hard"?1.5:1;f.block=ad<125&&enemy.attack>0&&Math.random()<(difficulty==="hard"?.16:difficulty==="normal"?.07:.025);if(ad>105){f.vx=Math.sign(d)*115*(f.speed||3)/3*skill;if(Math.random()<.003*skill)f.vy=-540;}else{f.vx=0;if(Math.random()<.014*skill)attack(f,Math.random()<.3&&f.energy>=70?"special":Math.random()<.55?"kick":"punch");}}
+function updateFighter(f,other,dt,local){f.cooldown=Math.max(0,f.cooldown-dt);f.attack=Math.max(0,f.attack-dt);f.stun=Math.max(0,f.stun-dt);f.hitFlash=Math.max(0,(f.hitFlash||0)-dt);f.crouch=!!(local&&input.crouch);if(f.stun<=0){if(local){f.block=input.block;f.vx=(input.right?1:0)-(input.left?1:0);f.vx*=235*(f.speed||3)/3*(f.crouch?.45:1);if(input.jump&&f.grounded&&!f.crouch){f.vy=-610;f.grounded=false;}if(input.punch)attack(f,"punch");if(input.kick)attack(f,"kick");if(input.grab)attack(f,"grab");if(input.special&&f.energy>=70)attack(f,"special");}else if(mode==="cpu")cpuThink(f,other,dt);else if(remoteState){f.x+=(remoteState.x-f.x)*Math.min(1,dt*15);f.y+=(remoteState.y-f.y)*Math.min(1,dt*15);f.hp=remoteState.hp;updateHud();if(f.hp<=0)finish(other);if(Number.isInteger(remoteState.characterIndex)&&roster[remoteState.characterIndex])applyRosterFighter(f,roster[remoteState.characterIndex]);f.block=remoteState.block;f.attack=remoteState.attack;f.attackType=remoteState.attackType;f.face=remoteState.face;}}
 if(f.attack>0&&f.attackType&&!f.hitDone){f.hitDone=true;damage(f,other,f.attackType);}if(f.attack<=0)f.hitDone=false;
 if(!(mode==="online"&&!local&&remoteState)){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=gravity*dt;if(f.y>=floor){f.y=floor;f.vy=0;f.grounded=true;}}f.x=Math.max(65,Math.min(895,f.x));if(local||mode==="cpu")f.face=other.x>f.x?1:-1;
 }
 function drawFighter(f){
- const t=performance.now()/1000, bob=f.grounded?Math.sin(t*7+(f.x%13))*2:Math.sin(t*18)*4;
+ const t=performance.now()/1000, walkActive=running&&Math.abs(f.vx)>12, bob=f.grounded?(walkActive?Math.abs(Math.sin(t*12))*4:Math.sin(t*5+(f.x%13))*2):Math.sin(t*18)*4;
  const celebrating=!!f.celebrate, attacking=f.attack>0, special=attacking&&f.attackType==="special";
  const attackFrame=attacking?Math.min(3,Math.floor((1-f.attack/(special?.42:.25))*4)):0;
  const attackReach=[44,58,78,56][attackFrame],attackLift=[-104,-132,-158,-124][attackFrame];
@@ -109,7 +109,7 @@ function drawFighter(f){
  ctx.fillStyle="#0009";ctx.beginPath();ctx.ellipse(0,3,48,9,0,0,Math.PI*2);ctx.fill();
  if(celebrating){ctx.translate(0,-Math.abs(Math.sin(t*5))*5);}
  // Legs with a small fighting stance
- const stride=running&&!roundOver?walkStride:0;
+ const stride=walkActive?walkStride:0;
  ctx.fillStyle="#202a3a";ctx.beginPath();ctx.roundRect(-25,-82+stride,21,62,8);ctx.roundRect(5,-82-stride,21,62,8);ctx.fill();
  ctx.fillStyle="#eee7da";ctx.beginPath();ctx.roundRect(-31,-25+stride,34,12,5);ctx.roundRect(2,-25-stride,34,12,5);ctx.fill();
  // Torso and party-neutral costume accents
@@ -124,7 +124,7 @@ function drawFighter(f){
  if(f.look==="white-kurta"){ctx.fillStyle="#f1eee5";ctx.beginPath();ctx.moveTo(-28,-148);ctx.lineTo(28,-148);ctx.lineTo(36,-78);ctx.lineTo(-36,-78);ctx.closePath();ctx.fill();ctx.strokeStyle=f.accent;ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,-144);ctx.lineTo(0,-84);ctx.stroke();}
 
  // Arms animate during attack and victory
- const armY=celebrating?victoryLift:(attacking?attackLift:-101);
+ const armY=celebrating?victoryLift:(attacking?attackLift:(f.block?-145:(walkActive?-101+Math.sin(t*12)*13:-101)));
  ctx.strokeStyle="#a96c4d";ctx.lineWidth=15;ctx.lineCap="round";
  ctx.beginPath();ctx.moveTo(-24,-135);ctx.lineTo(-42,celebrating?-184:-101);ctx.stroke();
  ctx.beginPath();ctx.moveTo(24,-135);ctx.lineTo(attacking?attackReach:38,armY);ctx.stroke();
@@ -162,7 +162,7 @@ function drawFighter(f){
  ctx.restore();
 }
 function draw(){ctx.clearRect(0,0,960,440);const sky=ctx.createLinearGradient(0,0,0,440);sky.addColorStop(0,"#1d2637");sky.addColorStop(1,"#352b31");ctx.fillStyle=sky;ctx.fillRect(0,0,960,440);
-ctx.fillStyle="#ff9a53";ctx.globalAlpha=.16;ctx.beginPath();ctx.arc(480,150,105,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+ctx.fillStyle=selectedStage==="jantar"?"#e9b86a":selectedStage==="gully"?"#68a9b8":"#ff9a53";ctx.globalAlpha=.18;ctx.beginPath();ctx.arc(480,150,105,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;\n// Stage-specific silhouettes and moving fight-night spotlights.\nif(selectedStage==="jantar"){ctx.fillStyle="#3a3030";ctx.fillRect(390,120,180,210);ctx.fillStyle="#b77b4c";ctx.fillRect(425,145,110,185);ctx.fillRect(455,105,50,28);}else if(selectedStage==="gully"){ctx.fillStyle="#263a3d";ctx.fillRect(0,205,960,125);for(let i=0;i<8;i++){ctx.fillStyle=i%2?"#b66c4c":"#527b76";ctx.fillRect(i*125+8,220+(i%3)*18,95,110);}}else{ctx.fillStyle="#303747";ctx.fillRect(365,170,230,160);ctx.fillStyle="#aeb6c5";ctx.fillRect(450,125,60,205);ctx.fillStyle="#d6a35c";ctx.fillRect(390,195,180,8);}ctx.save();ctx.globalAlpha=.12;ctx.fillStyle="#ffe2a6";const beam=Math.sin(performance.now()/900)*150;ctx.beginPath();ctx.moveTo(90,0);ctx.lineTo(210+beam,330);ctx.lineTo(330+beam,330);ctx.closePath();ctx.fill();ctx.beginPath();ctx.moveTo(870,0);ctx.lineTo(630-beam,330);ctx.lineTo(750-beam,330);ctx.closePath();ctx.fill();ctx.restore();
 for(let i=0;i<9;i++){let bx=i*120;ctx.fillStyle=i%2?"#252b39":"#202633";ctx.fillRect(bx,140+(i%3)*18,85,220);ctx.fillStyle="#e7a75b";ctx.globalAlpha=.18;ctx.fillRect(bx+15,165+(i%3)*18,9,25);ctx.fillRect(bx+48,165+(i%3)*18,9,25);ctx.globalAlpha=1;}
 ctx.fillStyle="#20242e";ctx.fillRect(0,330,960,110);ctx.strokeStyle="#566071";ctx.globalAlpha=.35;for(let i=-2;i<12;i++){ctx.beginPath();ctx.moveTo(480,330);ctx.lineTo(i*110,440);ctx.stroke();}ctx.beginPath();ctx.moveTo(0,365);ctx.lineTo(960,365);ctx.stroke();ctx.globalAlpha=1;
 ctx.fillStyle="#ffbd74";ctx.font="800 11px DM Sans";ctx.fillText("MITROON FIGHT NIGHT",28,35);ctx.fillStyle="#9aa6b8";ctx.font="700 9px DM Sans";ctx.fillText(selectedStage==="sansad"?"SANSAD • NEW DELHI":selectedStage==="jantar"?"JANTAR MANTAR • DELHI":"DESI GULLY • KOLKATA",28,52);
