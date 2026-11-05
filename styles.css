@@ -6,3 +6,9 @@
 /* Public-figure parody roster labels */
 .roster-party{display:inline-block;margin-top:7px;padding:3px 7px;border:1px solid #ffffff24;border-radius:4px;color:var(--yellow);font-size:8px;font-weight:900;letter-spacing:1.1px}
 .roster-role{margin-top:6px}
+
+/* Fighter signature move labels */
+.roster-special{display:block;margin-top:7px;color:#ffb36e;font-size:8px;font-weight:900;letter-spacing:.7px;line-height:1.35}
+.roster-stats{margin-top:8px}
+.roster-card{min-height:194px}
+@media(max-width:760px){.roster-card{min-height:186px}.roster-special{font-size:7px}}
