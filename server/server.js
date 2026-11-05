@@ -29,7 +29,7 @@ wss.on("connection",ws=>{
       if(!ws.room||msg.room!==ws.room)return;
       const room=rooms.get(ws.room);if(!room)return;
       const s=msg.state;if(!s||![s.x,s.y,s.hp,s.attack].every(Number.isFinite))return;
-      const safe={x:Math.max(50,Math.min(910,s.x)),y:Math.max(0,Math.min(365,s.y)),hp:Math.max(0,Math.min(100,s.hp)),block:!!s.block,attack:Math.max(0,Math.min(1,s.attack)),attackType:["punch","kick","special",""].includes(s.attackType)?s.attackType:"",face:s.face<0?-1:1};
+      const safe={x:Math.max(50,Math.min(910,s.x)),y:Math.max(0,Math.min(365,s.y)),hp:Math.max(0,Math.min(100,s.hp)),block:!!s.block,attack:Math.max(0,Math.min(1,s.attack)),attackType:["punch","kick","special",""].includes(s.attackType)?s.attackType:"",face:s.face<0?-1:1,characterIndex:Number.isInteger(s.characterIndex)&&s.characterIndex>=0&&s.characterIndex<8?s.characterIndex:0};
       for(const [id,peer] of room.players)if(id!==ws.playerId)send(peer,{type:"state",playerId:ws.playerId,state:safe});
     }
   });
