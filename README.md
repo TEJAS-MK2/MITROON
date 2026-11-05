@@ -81,7 +81,7 @@ The WebSocket server must be deployed separately; GitHub Pages cannot run the No
 
 - [x] Responsive arcade landing page and arena UI
 - [x] Playable local CPU duel prototype
-- [x] Eight public-figure parody fighters from multiple parties
+- [x] Eight public-figure parody fighters from multiple parties\n- [x] Distinctive illustrated costumes, facial details, signature moves and victory poses
 - [x] Character attributes, opponent selection, three stage themes and CPU difficulty
 - [x] Keyboard and touch controls
 - [x] Private room creation/joining and WebSocket state relay
