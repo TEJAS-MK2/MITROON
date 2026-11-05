@@ -67,12 +67,12 @@
       <div class="game-shell">
         <div class="hud">
           <div class="player-hud"><div class="player-name" id="leftName">YOU <span>01</span></div><div class="health-track"><div class="health-fill" id="leftHealth"></div></div><div class="hud-sub">THE CHALLENGER</div></div>
-          <div class="round-indicator"><span>ROUND <b id="roundNumber">01</b></span><strong id="roundScore">0 — 0</strong></div>
+          <div class="round-indicator"><span>ROUND <b id="roundNumber">01</b></span><strong id="roundScore">0 — 0</strong><button class="fullscreen-btn" id="fullscreenBtn" type="button">FULL SCREEN</button></div>
           <div class="player-hud player-hud-right"><div class="player-name" id="rightName">CPU <span>02</span></div><div class="health-track"><div class="health-fill" id="rightHealth"></div></div><div class="hud-sub">THE OPPONENT</div></div>
         </div>
-        <div class="arena-wrap"><canvas id="arena" width="960" height="440" aria-label="MITROON fighting arena"></canvas><div class="arena-overlay" id="arenaOverlay"><div class="overlay-kicker">MITROON FIGHT NIGHT</div><div class="overlay-title" id="overlayTitle">READY?</div><div class="overlay-message" id="overlayMessage">Step into the arena.</div><button class="btn btn-primary" id="startFight">START FIGHT <span class="btn-arrow">↗</span></button></div></div>
-        <div class="game-bottom"><div class="control-hint"><kbd>A</kbd><kbd>D</kbd> MOVE <kbd>W</kbd> JUMP <kbd>J</kbd> PUNCH <kbd>K</kbd> KICK <kbd>L</kbd> SPECIAL <kbd>S</kbd> BLOCK</div><div class="connection-status" id="connectionStatus"><span class="live-dot"></span> LOCAL MATCH</div></div>
-        <div class="touch-controls"><div class="touch-group"><button data-key="a">◀</button><button data-key="d">▶</button><button data-key="w">▲</button></div><div class="touch-group"><button data-key="s">BLOCK</button><button data-key="j">PUNCH</button><button data-key="k">KICK</button><button data-key="l" class="special-touch">SPECIAL</button></div></div>
+        <div class="arena-wrap"><div class="rotate-hint">FOR THE FULL ARENA, ROTATE YOUR PHONE TO LANDSCAPE</div><canvas id="arena" width="960" height="440" aria-label="MITROON fighting arena"></canvas><div class="arena-overlay" id="arenaOverlay"><div class="overlay-kicker">MITROON FIGHT NIGHT</div><div class="overlay-title" id="overlayTitle">READY?</div><div class="overlay-message" id="overlayMessage">Step into the arena.</div><button class="btn btn-primary" id="startFight">START FIGHT <span class="btn-arrow">↗</span></button></div></div>
+        <div class="game-bottom"><div class="control-hint"><kbd>A/D</kbd> MOVE <kbd>W</kbd> JUMP <kbd>↓</kbd> CROUCH <kbd>J</kbd> PUNCH <kbd>K</kbd> KICK <kbd>I</kbd> GRAB <kbd>L</kbd> SUPER <kbd>S</kbd> BLOCK</div><div class="connection-status" id="connectionStatus"><span class="live-dot"></span> LOCAL MATCH</div></div>
+        <div class="touch-controls"><div class="touch-group"><button data-key="a">◀</button><button data-key="d">▶</button><button data-key="w">▲</button></div><div class="touch-group"><button data-key="s">BLOCK</button><button data-key="ArrowDown">CROUCH</button><button data-key="i">GRAB</button><button data-key="j">PUNCH</button><button data-key="k">KICK</button><button data-key="l" class="special-touch">SUPER</button></div></div>
       </div>
     </section>
 
