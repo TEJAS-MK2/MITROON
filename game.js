@@ -48,7 +48,7 @@ function openSelect(next){pendingMode=next;home.classList.add("hidden");modes.cl
 function applyRosterFighter(f,character){Object.assign(f,{name:character.name,color:character.color,accent:character.accent,look:character.look,special:character.special,power:character.power,speed:character.speed});}
 function showGame(title,sub){home.classList.add("hidden");modes.classList.add("hidden");onlinePanel.classList.add("hidden");gameSection.classList.remove("hidden");$("gameTitle").textContent=title;$("overlayTitle").textContent="READY?";$("overlayMessage").textContent=sub;$("arenaOverlay").classList.remove("hidden");}
 function reset(){fighters.forEach((f,i)=>Object.assign(f,{x:i?730:230,y:floor,vx:0,vy:0,hp:100,grounded:true,attack:0,attackType:"",cooldown:0,block:false,stun:0,energy:0,celebrate:false}));roundOver=false;running=false;matchComplete=false;roundWins=[0,0];roundNumber=1;remoteState=null;updateHud();updateScoreboard();}
-function updateHud(){$("leftHealth").style.width=fighters[0].hp+"%";$("rightHealth").style.width=fighters[1].hp+"%";}
+function updateHud(){$("leftHealth").style.width=fighters[0].hp+"%";$("rightHealth").style.width=fighters[1].hp+"%";const le=$("leftEnergy"),re=$("rightEnergy");if(le)le.style.width=fighters[0].energy+"%";if(re)re.style.width=fighters[1].energy+"%";}
 function setMode(next){
  mode=next==="tournament"?"cpu":next;if(next==="cpu"||next==="tournament")playerId=0;reset();
  tournamentActive=next==="tournament";tournamentIndex=0;tournamentOpponents=roster.map((_,i)=>i).filter(i=>i!==selectedHero);
@@ -65,7 +65,9 @@ function setMode(next){
 }
 function setInput(k,on){if(k==="a"||k==="ArrowLeft")input.left=on;if(k==="d"||k==="ArrowRight")input.right=on;if(k==="w"||k==="ArrowUp")input.jump=on;if(k==="j")input.punch=on;if(k==="k")input.kick=on;if(k==="l"||k===" ")input.special=on;if(k==="s")input.block=on;if(k==="ArrowDown")input.crouch=on;if(k==="i")input.grab=on;}
 function registerComboKey(k){
- if(!running||mode==="online"&&playerId===2)return;
+ if(!running)return;
+ const keyMap={ArrowDown:"s",ArrowRight:"d"};k=keyMap[k]||k;
+ if(!["j","k","s","d"].includes(k))return;
  if(comboTimer>0)comboBuffer.push(k);else comboBuffer=[k];
  comboTimer=.48;comboBuffer=comboBuffer.slice(-4);
  const seq=comboBuffer.join("");
@@ -187,7 +189,8 @@ $("confirmFight").onclick=()=>setMode(pendingMode);
 $("cancelSelect").onclick=()=>{selectSection.classList.add("hidden");home.classList.remove("hidden");modes.classList.remove("hidden");};
 $("backHome").onclick=()=>{running=false;if(socket){socket.close();socket=null;}gameSection.classList.add("hidden");selectSection.classList.add("hidden");home.classList.remove("hidden");modes.classList.remove("hidden");};
 $("soundToggle").onclick=()=>{muted=!muted;$("soundToggle").textContent="SOUND: "+(muted?"OFF":"ON");};
-window.addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["a","d","w","s","j","k","l","i"," ","ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(k))e.preventDefault();keys.add(k);setInput(k,true);if(["j","k"].includes(k))registerComboKey(k);});
+$("fullscreenBtn").onclick=()=>{const target=$("gameSection");if(!document.fullscreenElement){target.requestFullscreen?.().catch(()=>{});screen.orientation?.lock?.("landscape").catch?.(()=>{});}else document.exitFullscreen?.();};
+window.addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(["a","d","w","s","j","k","l","i"," ","ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(k))e.preventDefault();keys.add(k);setInput(k,true);if(["j","k","s","d","ArrowDown","ArrowRight"].includes(k))registerComboKey(k);});
 window.addEventListener("keyup",e=>{const k=e.key.toLowerCase();keys.delete(k);setInput(k,false);});
 document.querySelectorAll("[data-key]").forEach(b=>{const k=b.dataset.key;b.addEventListener("pointerdown",e=>{e.preventDefault();setInput(k,true);if(["j","k"].includes(k))registerComboKey(k);});["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,e=>{e.preventDefault();setInput(k,false);}));});
 document.addEventListener("visibilitychange",()=>{if(document.hidden){Object.keys(input).forEach(k=>input[k]=false);}});
