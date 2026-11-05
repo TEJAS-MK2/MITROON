@@ -66,12 +66,16 @@ if(!(mode==="online"&&!local&&remoteState)){f.x+=f.vx*dt;f.y+=f.vy*dt;f.vy+=grav
 function drawFighter(f){
  const t=performance.now()/1000, bob=f.grounded?Math.sin(t*7+(f.x%13))*2:Math.sin(t*18)*4;
  const celebrating=!!f.celebrate, attacking=f.attack>0, special=attacking&&f.attackType==="special";
+ const attackFrame=attacking?Math.min(3,Math.floor((1-f.attack/(special?.42:.25))*4)):0;
+ const attackReach=[44,58,78,56][attackFrame],attackLift=[-104,-132,-158,-124][attackFrame];
+ const victoryFrame=Math.floor(t*5)%4,victoryLift=[-172,-194,-208,-188][victoryFrame];
+ const walkFrame=Math.floor(t*10)%4,walkStride=[-5,0,5,0][walkFrame];
  ctx.save();ctx.translate(f.x,f.y+bob);ctx.scale(f.face||1,1);
  // Ground shadow and character silhouette
  ctx.fillStyle="#0009";ctx.beginPath();ctx.ellipse(0,3,48,9,0,0,Math.PI*2);ctx.fill();
  if(celebrating){ctx.translate(0,-Math.abs(Math.sin(t*5))*5);}
  // Legs with a small fighting stance
- const stride=running&&!roundOver?Math.sin(t*13)*5:0;
+ const stride=running&&!roundOver?walkStride:0;
  ctx.fillStyle="#202a3a";ctx.beginPath();ctx.roundRect(-25,-82+stride,21,62,8);ctx.roundRect(5,-82-stride,21,62,8);ctx.fill();
  ctx.fillStyle="#eee7da";ctx.beginPath();ctx.roundRect(-31,-25+stride,34,12,5);ctx.roundRect(2,-25-stride,34,12,5);ctx.fill();
  // Torso and party-neutral costume accents
@@ -83,11 +87,11 @@ function drawFighter(f){
  if(f.look==="shaved-saffron"){ctx.fillStyle="#ef9d27";ctx.beginPath();ctx.moveTo(-28,-148);ctx.lineTo(28,-148);ctx.lineTo(36,-78);ctx.lineTo(-36,-78);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd28a";ctx.fillRect(-5,-192,10,14);}
  if(f.look==="muffler-glasses"){ctx.fillStyle="#dce0e4";ctx.beginPath();ctx.moveTo(-28,-145);ctx.lineTo(28,-145);ctx.lineTo(31,-130);ctx.lineTo(-31,-130);ctx.closePath();ctx.fill();ctx.fillRect(18,-133,12,50);}
  // Arms animate during attack and victory
- const armY=celebrating?-188:(attacking?-127:-101);
+ const armY=celebrating?victoryLift:(attacking?attackLift:-101);
  ctx.strokeStyle="#a96c4d";ctx.lineWidth=15;ctx.lineCap="round";
  ctx.beginPath();ctx.moveTo(-24,-135);ctx.lineTo(-42,celebrating?-184:-101);ctx.stroke();
- ctx.beginPath();ctx.moveTo(24,-135);ctx.lineTo(attacking?68:38,armY);ctx.stroke();
- ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.arc(attacking?68:38,armY,9,0,Math.PI*2);ctx.fill();
+ ctx.beginPath();ctx.moveTo(24,-135);ctx.lineTo(attacking?attackReach:38,armY);ctx.stroke();
+ ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.arc(attacking?attackReach:38,armY,9,0,Math.PI*2);ctx.fill();
  // Neck and face, shaded with simple comic highlights
  ctx.fillStyle="#a96c4d";ctx.beginPath();ctx.roundRect(-8,-157,16,18,5);ctx.fill();
  ctx.fillStyle="#b97b59";ctx.beginPath();ctx.ellipse(0,-181,23,27,0,0,Math.PI*2);ctx.fill();
