@@ -73,7 +73,7 @@ function registerComboKey(k){
  const seq=comboBuffer.join("");
  const combos={"jjj":3,"jjk":3,"jkk":3,"kk":2,"sjj":3,"sjk":3,"dj":2,"dk":2,"sk":2};
  const power=combos[seq];
- if(power){const f=fighters[mode==="online"&&playerId===2?1:0];if(power===2||power===3){attack(f,"combo");f.comboPower=power;spawn(f.x,f.y-125,f.accent,8);}}
+ if(power){const f=fighters[mode==="online"&&playerId===2?1:0];if(power===2||power===3){f.cooldown=0;f.attack=0;attack(f,"combo");f.comboPower=power;spawn(f.x,f.y-125,f.accent,8);comboBuffer=[];comboTimer=0;}}
 }
 function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.46:type==="grab"?.32:type==="combo"?.34:.25;f.attackType=type;f.cooldown=type==="special"?1:type==="grab"?.62:type==="combo"?.48:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+(type==="grab"?12:18));}
 function damage(attacker,target,type){
