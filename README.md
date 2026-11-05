@@ -2,6 +2,12 @@
 
 **Apna Arena.** MITROON is an Indian political-satire 2D arcade fighting game. Choose a caricature of a recognisable public political figure, challenge the CPU locally, or invite a friend into a private online room.
 
+## Live demos
+
+- **GitHub Pages:** https://tejas-mk2.github.io/MITROON/
+- **Vercel:** https://mitroon-pijush1.vercel.app
+- **Source repository:** https://github.com/TEJAS-MK2/MITROON
+
 ## Political parody roster
 
 The current eight-fighter prototype includes public figures associated with different Indian political parties:
