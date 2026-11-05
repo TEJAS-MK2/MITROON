@@ -69,7 +69,11 @@ if(f.look==="dark-glasses"){ctx.fillStyle="#211a18";ctx.beginPath();ctx.ellipse(
 
 ctx.fillStyle="#191d26";ctx.fillRect(-21,-179,42,10);ctx.fillStyle="#fff";ctx.fillRect(7,-175,5,4);
 ctx.fillStyle=f.color;ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();
-ctx.fillStyle=f.accent;ctx.fillRect(-29,-91,58,9);if(f.look==="shaved-saffron")ctx.fillRect(-5,-184,10,13);
+if(f.look==="white-tee-beard"){ctx.fillStyle="#f1eee7";ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();}
+if(f.look==="white-sari"){ctx.fillStyle="#f4f0e6";ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();ctx.strokeStyle="#278b72";ctx.lineWidth=7;ctx.beginPath();ctx.moveTo(-26,-143);ctx.lineTo(23,-90);ctx.stroke();ctx.fillStyle="#f4f0e6";ctx.fillRect(19,-138,12,54);}
+if(f.look==="shaved-saffron"){ctx.fillStyle="#f2a52b";ctx.beginPath();ctx.moveTo(-27,-145);ctx.lineTo(27,-145);ctx.lineTo(35,-77);ctx.lineTo(-35,-77);ctx.closePath();ctx.fill();ctx.fillStyle="#ffd28a";ctx.fillRect(-5,-184,10,13);}
+if(f.look==="muffler-glasses"){ctx.fillStyle="#d8d9dc";ctx.fillRect(-29,-144,58,13);ctx.fillRect(19,-138,12,54);}
+ctx.fillStyle=f.accent;ctx.fillRect(-29,-91,58,9);
 ctx.strokeStyle="#a96c4d";ctx.lineWidth=16;ctx.lineCap="round";
 ctx.beginPath();ctx.moveTo(-24,-134);ctx.lineTo(-43,-99);ctx.stroke();
 ctx.beginPath();ctx.moveTo(24,-134);ctx.lineTo(f.attack>0?65:38,-(f.attack>0?118:99));ctx.stroke();
