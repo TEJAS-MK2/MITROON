@@ -75,7 +75,7 @@ function registerComboKey(k){
  const power=combos[seq];
  if(power){const f=fighters[mode==="online"&&playerId===2?1:0];if(power===2||power===3){f.cooldown=0;f.attack=0;attack(f,"combo");f.comboPower=power;spawn(f.x,f.y-125,f.accent,8);comboBuffer=[];comboTimer=0;}}
 }
-function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.46:type==="grab"?.32:type==="combo"?.34:.25;f.attackType=type;f.cooldown=type==="special"?1:type==="grab"?.62:type==="combo"?.48:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+(type==="grab"?12:18));}
+function attack(f,type){if(f.cooldown>0||f.stun>0||f.attack>0)return;f.attack=type==="special"?.46:type==="grab"?.32:type==="combo"?.34:.25;f.attackType=type;f.cooldown=type==="special"?1:type==="grab"?.62:type==="combo"?.48:.42;if(type==="special")f.energy=0;else f.energy=Math.min(100,f.energy+(type==="grab"?12:18));updateHud();}
 function damage(attacker,target,type){
  const range=type==="special"?155:type==="grab"?105:type==="combo"?118:type==="kick"?112:88;
  if(Math.abs(attacker.x-target.x)>range||Math.abs(attacker.y-target.y)>(type==="grab"?75:90))return;
