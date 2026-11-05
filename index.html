@@ -49,6 +49,19 @@
       </div>
     </section>
 
+    <section class="select-section hidden" id="selectSection">
+      <div class="select-head"><div><span class="eyebrow">THE PEOPLE'S ROSTER</span><h2>CHOOSE YOUR<br><span>NETA.</span></h2><p>Original fictional political caricatures. All parties, no endorsements.</p></div><div class="select-step">01 <i></i> SELECT YOUR FIGHTER</div></div>
+      <div class="roster-grid" id="rosterGrid" aria-label="Choose your fighter"></div>
+      <div class="select-options">
+        <label class="select-control">OPPONENT <select id="opponentSelect"></select></label>
+        <label class="select-control">ARENA <select id="stageSelect"><option value="sansad">SANSAD AT SUNSET</option><option value="jantar">JANTAR MANTAR</option><option value="gully">DESI GULLY</option></select></label>
+        <label class="select-control">CPU LEVEL <select id="difficultySelect"><option value="easy">EASY</option><option value="normal" selected>NORMAL</option><option value="hard">HARD</option></select></label>
+        <button class="btn btn-primary" id="confirmFight">FIGHT! <span class="btn-arrow">↗</span></button>
+      </div>
+      <button class="back-button select-back" id="cancelSelect">← BACK</button>
+      <p class="satire-note">MITROON is fictional political satire. Characters are invented and are not depictions or endorsements of real politicians or parties.</p>
+    </section>
+
     <section class="game-section hidden" id="gameSection">
       <div class="game-heading"><div><span class="eyebrow">LIVE FROM THE GULLY</span><h2 id="gameTitle">CPU CHALLENGE</h2></div><button class="back-button" id="backHome">← BACK TO HOME</button></div>
       <div class="game-shell">
